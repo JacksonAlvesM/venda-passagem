@@ -1,4 +1,5 @@
 ﻿using SellBusTicket.Domain.Common;
+using SellBusTicket.Domain.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,16 @@ namespace SellBusTicket.Domain.ValueObjects
     public class TravelDate : ValueObject
     {
         public DateOnly Value { get; private set; }
+        private readonly NotificationContext _notificationContext;
 
-        public TravelDate(DateOnly value)
+        public TravelDate(DateOnly value, NotificationContext notificationContext)
         {
+            _notificationContext = notificationContext;
             if (value < DateOnly.FromDateTime(DateTime.Now.Date))
-                throw new ArgumentException("Data de viagem não pode ser no passado.");
+            {
+                _notificationContext.AddNotification("Data de viagem não pode ser no passado.", nameof(TravelDate));
+                return;
+            }
 
             Value = value;
         }

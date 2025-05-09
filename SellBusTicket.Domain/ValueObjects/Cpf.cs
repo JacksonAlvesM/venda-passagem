@@ -1,4 +1,5 @@
 ﻿using SellBusTicket.Domain.Common;
+using SellBusTicket.Domain.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,24 @@ namespace SellBusTicket.Domain.ValueObjects
     public class Cpf : ValueObject
     {
         public string Value { get; private set; }
+        private readonly NotificationContext _notificationContext;
 
-        public Cpf(string value)
+        public Cpf(string value, NotificationContext notificationContext)
         {
+            _notificationContext = notificationContext;
+
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("CPF não pode ser vazio.");
+            {
+                _notificationContext.AddNotification("CPF não pode ser vazio.", nameof(Cpf));
+            }
 
             var digitsOnly = Regex.Replace(value, "[^0-9]", "");
 
             if (digitsOnly.Length != 11 || !digitsOnly.All(char.IsDigit))
-                throw new ArgumentException("CPF inválido.");
+            {
+                _notificationContext.AddNotification("CPF inválido.", nameof(Cpf));
+                return; 
+            }
 
             Value = digitsOnly;
         }

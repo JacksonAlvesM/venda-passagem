@@ -1,4 +1,5 @@
 ﻿using SellBusTicket.Domain.Common;
+using SellBusTicket.Domain.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,17 @@ namespace SellBusTicket.Domain.ValueObjects
     public class DepartureDateTime : ValueObject
     {
         public DateTime Value { get; private set; }
+        private readonly NotificationContext _notificationContext;
 
-        public DepartureDateTime(DateTime value)
+        public DepartureDateTime(DateTime value, NotificationContext notificationContext)
         {
+            _notificationContext = notificationContext;
+
             if (value < DateTime.Now)
-                throw new ArgumentException("Data e hora de partida não podem estar no passado.");
+            {
+                notificationContext.AddNotification("Data e hora de partida não podem estar no passado.", nameof(DepartureDateTime));
+                return;
+            }
 
             Value = value;
         }

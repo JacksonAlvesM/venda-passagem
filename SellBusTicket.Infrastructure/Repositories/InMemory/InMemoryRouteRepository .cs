@@ -17,8 +17,19 @@ namespace SellBusTicket.Infrastructure.Repositories.InMemory
             var filtered = _routes
                 .Where(r => r.OriginId == originId &&
                             r.DestinationId == destinationId &&
-                            r.Departure.Value.Date == date.Date);
+                            r.Departure.Value.Date >= date.Date);
             return Task.FromResult<IEnumerable<Route>>(filtered);
+        }
+
+        public Task<Route?> GetByIdAsync(Guid id)
+        {
+            var route = _routes.FirstOrDefault(r => r.Id == id);
+            return Task.FromResult(route);
+        }
+        public Task AddAsync(Route route)
+        {
+            _routes.Add(route);
+            return Task.CompletedTask;
         }
 
     }

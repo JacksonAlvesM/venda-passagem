@@ -14,7 +14,7 @@ namespace SellBusTicket.Domain.ValueObjects
             Value = value.Trim();
         }
 
-        private PlaceName() { }
+        public PlaceName() { }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

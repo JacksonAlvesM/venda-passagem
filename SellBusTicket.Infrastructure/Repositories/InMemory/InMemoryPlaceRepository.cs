@@ -16,6 +16,16 @@ namespace SellBusTicket.Infrastructure.Repositories.InMemory
         {
             return Task.FromResult<IEnumerable<Place>>(_places);
         }
+        public Task AddAsync(Place place)
+        {
+            _places.Add(place);
+            return Task.CompletedTask;
+        }
+        public Task<Place?> GetByIdAsync(Guid id)
+        {
+            var route = _places.FirstOrDefault(r => r.Id == id);
+            return Task.FromResult(route);
+        }
 
     }
 }

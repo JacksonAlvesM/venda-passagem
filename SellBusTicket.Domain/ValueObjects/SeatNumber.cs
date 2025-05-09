@@ -1,15 +1,21 @@
 ﻿using SellBusTicket.Domain.Common;
+using SellBusTicket.Domain.Notification;
 
 namespace SellBusTicket.Domain.ValueObjects
 {
     public class SeatNumber : ValueObject
     {
         public int Value { get; private set; }
+        private readonly NotificationContext _notificationContext;
 
-        public SeatNumber(int value)
+        public SeatNumber(int value, NotificationContext notificationContext)
         {
-            if (value <= 0)
-                throw new ArgumentException("Número de poltrona deve ser positivo.");
+            _notificationContext = new NotificationContext();
+            if (value < 0)
+            {
+                _notificationContext.AddNotification("Número de poltrona deve ser maior que zero.", nameof(SeatNumber));
+                return;
+            }
 
             Value = value;
         }
