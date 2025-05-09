@@ -13,15 +13,15 @@ namespace SellBusTicket.Domain.Entities
         public Guid RouteId { get; private set; }
         public PassengerName Name { get; private set; }
         public Cpf Cpf { get; private set; }
-        public SeatNumber SeatNumber { get; private set; }
+        public SeatNumber Seat { get; private set; }
 
-        public Trip(Guid id, Guid routeId, PassengerName name, Cpf cpf, SeatNumber seatNumber)
+        public Trip(Guid id, Guid routeId, PassengerName name, Cpf cpf, SeatNumber seat)
         {
             Id = id;
             RouteId = routeId;
             Name = name;
             Cpf = cpf;
-            SeatNumber = seatNumber;
+            Seat = seat;
         }
 
         public Trip() { }
