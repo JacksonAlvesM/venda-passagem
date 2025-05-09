@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using SellBusTicket.Application.Interfaces;
+using SellBusTicket.Application.UseCases;
 using SellBusTicket.Domain.Interfaces.Repositories;
+using SellBusTicket.Domain.Notification;
 using SellBusTicket.Infrastructure.Data;
 using SellBusTicket.Infrastructure.Repositories.InMemory;
 using SellBusTicket.Infrastructure.Seeding;
@@ -16,7 +19,13 @@ builder.Services.AddSingleton<IRouteRepository, InMemoryRouteRepository>();
 builder.Services.AddSingleton<ISeatRepository, InMemorySeatRepository>();
 builder.Services.AddSingleton<ITripRepository, InMemoryTripRepository>();
 
+builder.Services.AddTransient<ISellTicketUseCase, SellTicketUseCase>();
+builder.Services.AddTransient<IGetPlacesUseCase, GetPlacesUseCase>();
+builder.Services.AddTransient<IGetAvailableRoutesUseCase, GetAvailableRoutesUseCase>();
+builder.Services.AddTransient<IGetSeatsByRouteUseCase, GetSeatsByRouteUseCase>();
+
 builder.Services.AddTransient<DataSeeder>();
+builder.Services.AddScoped<NotificationContext>();
 
 
 builder.Services.AddSwaggerGen();
